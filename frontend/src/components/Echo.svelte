@@ -1,19 +1,20 @@
 <script lang="ts">
-  // import {api} from '../lib/api'
-  import axios from 'axios';
-  import api from '../lib/api'
+	// import {api} from '../lib/api'
+	import api from '../lib/api';
 
-  let value: string
+	let value: string;
 
-  async function handle() {
-    api.getEcho(value).then(response => {
-      console.log(response.data)
-      value = response.data.msg
-    }).catch(error => {
-      console.log(error)
-    })
-  }
-
+	async function handle() {
+		api
+			.getEcho(value)
+			.then((response: { data: { msg: string } }) => {
+				console.log(response.data);
+				value = response.data.msg;
+			})
+			.catch((error: any) => {
+				console.log(error);
+			});
+	}
 </script>
 
 <input bind:value />

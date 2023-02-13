@@ -51,10 +51,10 @@
   </div>
 </nav>
 
-<style lang="scss">
+<style>
   nav {
   background-color: rgba(0, 0, 0, 0.8);
-  // font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  /* // font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif; */
   height: 45px;
 }
 

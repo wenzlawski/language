@@ -1,17 +1,24 @@
-import sveltePreprocess from 'svelte-preprocess'
+import adapter from '@sveltejs/adapter-static';
 
-export default {
-  // Consult https://svelte.dev/docs#compile-time-svelte-preprocess
+import { vitePreprocess } from '@sveltejs/kit/vite';
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
-  output: {
-    sourcemap: true,
-  },
-  preprocess: sveltePreprocess({
-    scss: {
-      // We can use a path relative to the root because
-      // svelte-preprocess automatically adds it to `includePaths`
-      // if none is defined.
-      // prependData: `@import 'src/styles/variables.scss';`
-    },
-  }),
-}
+  preprocess: vitePreprocess(),
+
+  kit: {
+    adapter: adapter(),
+    alias: {
+      $components: 'src/components',
+      $utils: 'src/utils',
+      $stores: 'src/stores',
+      $lib: 'src/lib',
+      $assets: 'src/assets'
+    }
+
+  }
+};
+
+export default config;

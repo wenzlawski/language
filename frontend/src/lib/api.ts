@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiUrl } from "./env";
+import { apiUrl } from "$lib/env";
 
 // function authHeaders(token: string) {
 //   return {
@@ -57,6 +57,14 @@ class Api {
     }
 
     return this.post('/api/v1/login/access-token', params, config);
+  }
+
+  getUserDocuments() {
+    return this.get('/api/v1/documents/')
+  }
+
+  createDocument() {
+    return this.post('/api/v1/documents/')
   }
 }
 

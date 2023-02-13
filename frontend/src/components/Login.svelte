@@ -1,52 +1,56 @@
-<script>
-  import { useForm, validators, HintGroup, Hint, email, required } from "svelte-use-form";
-  import api from '@/lib/api'
-  import {currentUser} from '@/stores/authentication'
+<script lang="ts">
+	import { useForm, validators, HintGroup, Hint, email, required } from 'svelte-use-form';
+	import api from '$lib/api';
+	import { currentUser } from '$stores/authentication';
 
-  const form = useForm();
+	const form = useForm();
 
-  async function handleSubmit() {
-    if ($form.email && $form.password) {
-      let email = $form.email.value;
-      let password = $form.password.value;
-      console.log(`logging in with ${email} and ${password}`)
-      await api.logInGetToken(email, password).then(response => {
-        console.log(response.data)
-        $currentUser.token = response.data.access_token
-      }).catch(error => {
-        console.log(error)
-      })
-  }
-}
+	async function handleSubmit() {
+		if ($form.email && $form.password) {
+			let email = $form.email.value;
+			let password = $form.password.value;
+			console.log(`logging in with ${email} and ${password}`);
+			await api
+				.logInGetToken(email, password)
+				.then((response: { data: { access_token: any } }) => {
+					console.log(response.data);
+					$currentUser.token = response.data.access_token;
+				})
+				.catch((error: any) => {
+					console.log(error);
+				});
+		}
+	}
 
-  function signOut() {
-    console.log(`logging out`)
-    console.log($currentUser)
-    $currentUser.token = ""
-  }
+	function signOut() {
+		console.log(`logging out`);
+		console.log($currentUser);
+		$currentUser.token = '';
+	}
 </script>
 
 {#if $currentUser.token}
-  <p>Signed in as {$currentUser}
-  <button on:click={signOut}>Sign out</button>
-  </p>
+	<p>
+		Signed in as {$currentUser}
+		<button on:click={signOut}>Sign out</button>
+	</p>
 {:else}
-<form use:form>
-  <h1>Login</h1>
+	<form use:form>
+		<h1>Login</h1>
 
-  <input type="email" name="email" use:validators={[required, email]} />
-  <HintGroup for="email">
-    <Hint on="required">This is a mandatory field</Hint>
-    <Hint on="email" hideWhenRequired>Email is not valid</Hint>
-  </HintGroup>
-  <br>
+		<input type="email" name="email" use:validators={[required, email]} />
+		<HintGroup for="email">
+			<Hint on="required">This is a mandatory field</Hint>
+			<Hint on="email" hideWhenRequired>Email is not valid</Hint>
+		</HintGroup>
+		<br />
 
-  <input type="password" name="password" use:validators={[required]} />
-  <Hint for="password" on="required">This is a mandatory field</Hint>
-  <br>
+		<input type="password" name="password" use:validators={[required]} />
+		<Hint for="password" on="required">This is a mandatory field</Hint>
+		<br />
 
-  <button disabled={!$form.valid} on:click|preventDefault={handleSubmit}>Login</button>
-</form>
+		<button disabled={!$form.valid} on:click|preventDefault={handleSubmit}>Login</button>
+	</form>
 {/if}
 
 <style>
