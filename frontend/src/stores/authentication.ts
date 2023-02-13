@@ -1,3 +1,9 @@
 import { writable } from 'svelte/store'
 
-export const currentUser = writable(null)
+const storedToken = localStorage.token
+
+export const currentUser = writable({
+  token: storedToken || ""
+})
+
+currentUser.subscribe((value) => localStorage.setItem("token", value.token))

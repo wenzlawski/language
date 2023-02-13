@@ -12,18 +12,21 @@
       console.log(`logging in with ${email} and ${password}`)
       await api.logInGetToken(email, password).then(response => {
         console.log(response.data)
+        $currentUser.token = response.data.access_token
       }).catch(error => {
         console.log(error)
       })
   }
+}
 
   function signOut() {
     console.log(`logging out`)
+    console.log($currentUser)
+    $currentUser.token = ""
   }
-}
 </script>
 
-{#if $currentUser}
+{#if $currentUser.token}
   <p>Signed in as {$currentUser}
   <button on:click={signOut}>Sign out</button>
   </p>
